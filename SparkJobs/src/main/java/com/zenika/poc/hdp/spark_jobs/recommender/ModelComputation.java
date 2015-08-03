@@ -25,7 +25,7 @@ public class ModelComputation {
      * "hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_10m/ratings.dat" with "::" separator
      * "hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_20m/ratings.csv" with "," separator
      *
-     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.recommender.ModelComputation poc.hdp-1.0-SNAPSHOT.jar "hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/ratings.dat" "::" "hdfs://sandbox.hortonworks.com:8020/poc/model1m" > recommender1m_result.txt
+     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.recommender.ModelComputation spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/ratings.dat" "::" "hdfs://sandbox.hortonworks.com:8020/poc/model1m" > recommender1m_result.txt
      */
     public static void main(String... args) throws Exception {
         if (args.length != 3) {

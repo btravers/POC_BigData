@@ -1,11 +1,16 @@
-package com.zenika.poc.hdp.spark_jobs.recommender;
+package com.zenika.poc.hdp.spark_jobs.es.feeder;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.Function;
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
+import org.elasticsearch.spark.rdd.api.java.JavaEsSpark;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ItemSuggestions {
 
@@ -21,7 +26,7 @@ public class ItemSuggestions {
      * @param args
      * @throws Exception
      *
-     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.recommender.ItemSuggestion poc.hdp-1.0-SNAPSHOT.jar "hdfs://sandbox.hortonworks.com:8020/poc/model1m" "1" "10" "hdfs://sandbox.hortonworks.com:8020/poc/recommendations1m"
+     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.ItemSuggestion poc.hdp-1.0-SNAPSHOT.jar "hdfs://sandbox.hortonworks.com:8020/poc/model1m" "1" "10" "hdfs://sandbox.hortonworks.com:8020/poc/recommendations1m"
      */
     public static void main(String... args) throws Exception {
         if (args.length != 4) {
@@ -43,9 +48,22 @@ public class ItemSuggestions {
         // Computing recommendations for the given user id
         Rating[] recommendations = model.recommendProducts(user, nbMovies);
 
-        // Saving recommendations result
-        jsc.parallelize(Arrays.asList(recommendations)).saveAsTextFile(recommendationsPath);
+        JavaRDD<Map<String, Object>> recommendationsRDD = jsc.parallelize(Arrays.asList(recommendations)).map(new Function<Rating, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> call(Rating v1) throws Exception {
+                Map<String, Object> recommendation =  new HashMap<>();
 
+                recommendation.put("movie", v1.product());
+                recommendation.put("user", v1.user());
+                recommendation.put("mark", v1.rating());
+
+                return recommendation;
+            }
+        });
+
+        // Saving recommendations result
+        JavaEsSpark.saveToEs(recommendationsRDD, "library/recommendation");
+        
         // Stopping context
         jsc.stop();
     }

@@ -17,7 +17,7 @@ public class Feeder {
      * @param args
      * @throws Exception
      *
-     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Feeder spark_jobs-1.0-SNAPSHOT.jar hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/movies.dat hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/ratings.dat 172.17.0.2:9200
+     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Feeder spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/movies.dat hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/ratings.dat 172.17.0.2:9200
      */
     public static void main(String... args) throws Exception {
         if (args.length != 3) {
@@ -111,5 +111,7 @@ public class Feeder {
         // Writing results
         JavaEsSpark.saveToEs(moviesWithMark, "library/movie");
         JavaEsSpark.saveToEs(ratings, "library/rating");
+
+        jsc.stop();
     }
 }
