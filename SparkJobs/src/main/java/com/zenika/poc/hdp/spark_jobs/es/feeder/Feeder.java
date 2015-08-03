@@ -30,7 +30,7 @@ public class Feeder {
 
         // Initializing context
         SparkConf sparkConf = new SparkConf().setAppName("Feeder");
-        sparkConf.set("es.index.auto.create", "true");
+        sparkConf.set("es.index.auto.create", "false");
         sparkConf.set("es.nodes", es);
         JavaSparkContext jsc = new JavaSparkContext(sparkConf);
 

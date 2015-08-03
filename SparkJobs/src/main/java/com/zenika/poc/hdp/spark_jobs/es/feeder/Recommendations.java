@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItemSuggestions {
+public class Recommendations {
 
     /**
      * Main function that retrieve recommendations for a given user using a given model
@@ -21,7 +21,7 @@ public class ItemSuggestions {
      *  - model path
      *  - user id
      *  - number of suggestions
-     *  - recommendations path
+     *  - ES host
      *
      * @param args
      * @throws Exception
@@ -37,10 +37,12 @@ public class ItemSuggestions {
         String modelPath = args[0];
         int user = Integer.parseInt(args[1]);
         int nbMovies = Integer.parseInt(args[2]);
-        String recommendationsPath = args[3];
+        String es = args[3];
 
         // Context initialization
         SparkConf sparkConf = new SparkConf().setAppName("ALS item suggestions");
+        sparkConf.set("es.index.auto.create", "false");
+        sparkConf.set("es.nodes", es);
         JavaSparkContext jsc = new JavaSparkContext(sparkConf);
 
         // Loading previously computed model
@@ -63,7 +65,7 @@ public class ItemSuggestions {
 
         // Saving recommendations result
         JavaEsSpark.saveToEs(recommendationsRDD, "library/recommendation");
-        
+
         // Stopping context
         jsc.stop();
     }
