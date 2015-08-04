@@ -6,19 +6,22 @@ var RatingConstants = require('../constants/RatingConstants');
 
 var CHANGE_EVENT = 'change';
 
-var __ratings = [];
+var __ratings = {};
 
 function update(ratings) {
     __ratings = ratings;
 }
 
-function create(rating) {
-    __ratings.push(rating);
-}
-
 var RatingStore = assign({}, EventEmitter.prototype, {
     getAll: function () {
         return __ratings;
+    },
+
+    get: function (id) {
+        if (__ratings[id]) {
+            return __ratings[id].mark;
+        }
+        return null;
     },
 
     emitChange: function() {
@@ -39,10 +42,6 @@ AppDispatcher.register(function (action) {
     switch (action.actionType) {
         case RatingConstants.RATING_GET_BY_USER:
             update(action.ratings);
-            RatingStore.emitChange();
-            break;
-        case RatingConstants.RATING_CREATE:
-            create(action.rating);
             RatingStore.emitChange();
             break;
     }

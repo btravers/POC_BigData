@@ -8,6 +8,9 @@ var RatingBox = require('./components/RatingBox.react');
 var RecommendationBox = require('./components/RecommendationBox.react');
 var Footer = require('./components/Footer.react');
 
+var RatingActions = require('./actions/RatingActions');
+var RecommendationActions = require('./actions/RecommendationActions');
+
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var Route = Router.Route;
@@ -32,8 +35,8 @@ var App = React.createClass({
                 <div className="header">
                     <ul className="nav nav-pills pull-right">
                         <li className={movies}><Link to="movies">Home</Link></li>
-                        <li className={ratings}><Link to="ratings">Ratings</Link></li>
-                        <li className={recommendations}><Link to="recommendations">Recommendations</Link></li>
+                        <li className={ratings} onClick={RatingActions.getRatings(1)}><Link to="ratings">Ratings</Link></li>
+                        <li className={recommendations} onClick={RecommendationActions.getByUser(1)}><Link to="recommendations">Recommendations</Link></li>
                     </ul>
                     <h3 className="text-muted">Movie library</h3>
                 </div>

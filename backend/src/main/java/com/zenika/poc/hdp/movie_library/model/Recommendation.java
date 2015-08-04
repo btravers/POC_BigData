@@ -1,10 +1,15 @@
 package com.zenika.poc.hdp.movie_library.model;
 
+import javax.validation.constraints.NotNull;
+
 public class Recommendation {
 
+    @NotNull
     private String user;
+    @NotNull
     private String movie;
-    private String mark;
+    @NotNull
+    private Double mark;
 
     public String getUser() {
         return user;
@@ -22,12 +27,12 @@ public class Recommendation {
         this.movie = movie;
     }
 
-    public String getMark() {
+    public Double getMark() {
         return mark;
     }
 
-    public void setMark(String mark) {
-        this.mark = mark;
+    public void setMark(Double mark) {
+        this.mark = Math.round(mark * 10) / 10.0;
     }
 
 }

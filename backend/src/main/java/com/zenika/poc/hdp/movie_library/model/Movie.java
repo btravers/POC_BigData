@@ -1,13 +1,19 @@
 package com.zenika.poc.hdp.movie_library.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class Movie {
 
+    @NotNull
     private String id;
+    @NotNull
     private String title;
+    @NotNull
     private List<String> genres;
-    private int mark;
+    @NotNull
+    private Double mark;
+    @NotNull
     private int nb;
 
     public String getId() {
@@ -42,11 +48,11 @@ public class Movie {
         this.nb = nb;
     }
 
-    public int getMark() {
+    public Double getMark() {
         return mark;
     }
 
-    public void setMark(int mark) {
-        this.mark = mark;
+    public void setMark(Double mark) {
+        this.mark = Math.round(mark * 10) / 10.0;
     }
 }

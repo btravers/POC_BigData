@@ -6,7 +6,7 @@ var RecommendationList = React.createClass({
     render: function() {
         var recommendationNodes = this.props.data.map(function(recommendation) {
             return (
-                <Recommendation title={recommendation.title} mark={recommendation.mark}></Recommendation>
+                <Recommendation key={recommendation.movie} recommendation={recommendation}></Recommendation>
             )
         });
 

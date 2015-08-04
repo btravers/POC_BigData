@@ -1,11 +1,17 @@
 package com.zenika.poc.hdp.movie_library.model;
 
+import javax.validation.constraints.NotNull;
+
 public class RatingWithTitle {
 
+    @NotNull
     private String user;
+    @NotNull
     private String movie;
+    @NotNull
     private String title;
-    private int mark;
+    @NotNull
+    private Double mark;
 
     public String getMovie() {
         return movie;
@@ -15,11 +21,11 @@ public class RatingWithTitle {
         this.movie = movie;
     }
 
-    public int getMark() {
+    public Double getMark() {
         return mark;
     }
 
-    public void setMark(int mark) {
+    public void setMark(Double mark) {
         this.mark = mark;
     }
 

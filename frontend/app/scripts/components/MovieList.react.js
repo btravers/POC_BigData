@@ -5,8 +5,8 @@ var MovieList = React.createClass({
     render: function() {
         var movieNodes = this.props.data.map(function(movie) {
             return (
-                <Movie title={movie.title} mark={movie.mark} nb={movie.nb}></Movie>
-            )
+                <Movie key={movie.id} movie={movie}></Movie>
+            );
         });
 
         return (

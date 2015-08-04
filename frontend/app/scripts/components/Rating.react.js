@@ -4,7 +4,7 @@ var Rating = React.createClass({
     render: function() {
         return (
             <div className="rating">
-                <h2>{this.props.title} <small>{this.props.mark}/5</small></h2>
+                <h3>{this.props.rating.title} <small>{this.props.rating.mark}/5</small></h3>
             </div>
         );
     }

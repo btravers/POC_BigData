@@ -7,6 +7,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +30,7 @@ public class RecommendationRepositoryImpl implements RecommendationRepository {
                 .setTypes(AppConfig.RECOMMENDATION)
                 .setQuery(
                         QueryBuilders.termQuery("user", user)
-                ).execute().actionGet();
+                ).addSort("mark", SortOrder.DESC).execute().actionGet();
 
         List<Recommendation> recommendations = new ArrayList<>();
 

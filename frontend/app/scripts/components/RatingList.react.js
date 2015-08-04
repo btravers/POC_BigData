@@ -4,11 +4,11 @@ var Rating = require('./Rating.react');
 
 var RatingList = React.createClass({
     render: function() {
-        var ratingNodes = this.props.data.map(function(rating) {
+        var ratingNodes = Object.keys(this.props.data).map(function(index) {
             return (
-                <Rating title={rating.title} mark={rating.mark}></Rating>
+                <Rating key={index} rating={this.props.data[index]} mark={this.props.data[index]}></Rating>
             )
-        });
+        }, this);
 
         return (
             <div className="ratingList">

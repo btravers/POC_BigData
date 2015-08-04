@@ -4,7 +4,7 @@ module.exports = {
 
     getRecommendations: function (user) {
         return $.ajax({
-            type: 'get',
+            type: 'GET',
             url: Config.getUrl() + '/recommendations',
             data: {
                 user: user

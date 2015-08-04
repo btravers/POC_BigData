@@ -4,7 +4,7 @@ module.exports = {
 
     getMovie: function (id) {
         return $.ajax({
-            type: 'get',
+            type: 'GET',
             url: Config.getUrl() + '/movie',
             data: {
                 id: id
@@ -16,7 +16,7 @@ module.exports = {
 
     searchMovies: function (request) {
         return $.ajax({
-            type: 'get',
+            type: 'GET',
             url: Config.getUrl() + '/movies',
             data: {
                 request: request

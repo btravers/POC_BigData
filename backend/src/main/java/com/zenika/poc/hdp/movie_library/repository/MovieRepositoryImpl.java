@@ -2,6 +2,7 @@ package com.zenika.poc.hdp.movie_library.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zenika.poc.hdp.movie_library.AppConfig;
+import com.zenika.poc.hdp.movie_library.exception.MovieLibraryException;
 import com.zenika.poc.hdp.movie_library.model.Movie;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -25,11 +26,17 @@ public class MovieRepositoryImpl implements MovieRepository {
     private ObjectMapper mapper;
 
     @Override
-    public Movie get(String id) throws IOException {
-        GetResponse response = this.client.prepareGet(AppConfig.INDEX, AppConfig.MOVIE, id)
+    public Movie get(String id) throws IOException, MovieLibraryException {
+        SearchResponse response = this.client.prepareSearch(AppConfig.INDEX)
+                .setTypes(AppConfig.MOVIE)
+                .setQuery(QueryBuilders.termQuery("id", id))
                 .execute().actionGet();
 
-        return this.mapper.readValue(response.getSourceAsString(), Movie.class);
+        if (response.getHits().getHits().length != 1) {
+            throw new MovieLibraryException("Should contain exactly one movie with id: " + id);
+        }
+
+        return this.mapper.readValue(response.getHits().getHits()[0].getSourceAsString(), Movie.class);
     }
 
     @Override

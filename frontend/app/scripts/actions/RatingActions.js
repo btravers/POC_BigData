@@ -12,12 +12,19 @@ var RatingActions = {
         });
     },
 
+    getRating: function(user, movie) {
+        HttpRating.getRating(user, movie).done(function (rating) {
+            if (rating) {
+                return rating.mark;
+            }
+
+            return null;
+        })
+    },
+
     createRating: function (rating) {
         HttpRating.createRating(rating).done(function () {
-            AppDispatcher.dispatch({
-                actionType: RatingConstants.RATING_CREATE,
-                rating: rating
-            })
+            this.getRating(1);
         });
     }
 };

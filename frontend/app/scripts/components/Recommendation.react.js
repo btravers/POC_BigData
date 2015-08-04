@@ -4,7 +4,7 @@ var Recommendation = React.createClass({
     render: function() {
         return (
             <div className="recommendation">
-                <h2>{this.props.title} <small>{this.props.mark}/5</small></h2>
+                <h3>{this.props.recommendation.title} <small>Score {this.props.recommendation.mark}</small></h3>
             </div>
         );
     }

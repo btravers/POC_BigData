@@ -26,7 +26,7 @@ public class Recommendations {
      * @param args
      * @throws Exception
      *
-     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.ItemSuggestion poc.hdp-1.0-SNAPSHOT.jar "hdfs://sandbox.hortonworks.com:8020/poc/model1m" "1" "10" "hdfs://sandbox.hortonworks.com:8020/poc/recommendations1m"
+     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Recommendations spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "hdfs://sandbox.hortonworks.com:8020/poc/model1m" "1" "10" "hdfs://sandbox.hortonworks.com:8020/poc/recommendations1m"
      */
     public static void main(String... args) throws Exception {
         if (args.length != 4) {

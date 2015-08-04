@@ -4,17 +4,15 @@ module.exports = {
 
     createRating: function (rating) {
         return $.ajax({
-            type: 'post',
+            type: 'POST',
             url: Config.getUrl() + '/rating',
-            data: rating,
-            dataType: 'json',
-            cache: false
+            data: rating
         });
     },
 
     getRating: function (user, movie) {
         return $.ajax({
-            type: 'get',
+            type: 'GET',
             url: Config.getUrl() + '/rating',
             data: {
                 user: user,
@@ -27,7 +25,7 @@ module.exports = {
 
     getRatings: function (user) {
         return $.ajax({
-            type: 'get',
+            type: 'GET',
             url: Config.getUrl() + '/ratings',
             data: {
                 user: user

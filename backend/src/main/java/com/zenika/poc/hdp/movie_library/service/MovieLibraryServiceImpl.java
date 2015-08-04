@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MovieLibraryServiceImpl implements MovieLibraryService {
@@ -25,7 +27,7 @@ public class MovieLibraryServiceImpl implements MovieLibraryService {
     private RatingRepository ratingRepository;
 
     @Override
-    public Movie getMovie(String id) throws IOException {
+    public Movie getMovie(String id) throws IOException, MovieLibraryException {
         return this.movieRepository.get(id);
     }
 
@@ -35,7 +37,7 @@ public class MovieLibraryServiceImpl implements MovieLibraryService {
     }
 
     @Override
-    public List<RecommendationWithTitle> getRecommendationsByUser(String user) throws IOException {
+    public List<RecommendationWithTitle> getRecommendationsByUser(String user) throws IOException, MovieLibraryException {
         List<Recommendation> recommendations =  this.recommendationRepository.getByUser(user);
 
         List<RecommendationWithTitle> result = new ArrayList<>();
@@ -65,10 +67,10 @@ public class MovieLibraryServiceImpl implements MovieLibraryService {
     }
 
     @Override
-    public List<RatingWithTitle> getRatingsByUser(String user) throws IOException {
+    public Map<String, RatingWithTitle> getRatingsByUser(String user) throws IOException, MovieLibraryException {
         List<Rating> ratings = this.ratingRepository.getByUser(user);
 
-        List<RatingWithTitle> result = new ArrayList<>();
+        Map<String,RatingWithTitle> result = new HashMap<>();
         for (Rating rating : ratings) {
             RatingWithTitle tmp = new RatingWithTitle();
             tmp.setUser(rating.getUser());
@@ -78,7 +80,7 @@ public class MovieLibraryServiceImpl implements MovieLibraryService {
             Movie movie = this.movieRepository.get(tmp.getMovie());
             tmp.setTitle(movie.getTitle());
 
-            result.add(tmp);
+            result.put(tmp.getMovie(), tmp);
         }
 
         return result;
