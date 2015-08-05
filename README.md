@@ -8,7 +8,7 @@ This application illustrates the use of collaborative filtering for movie recomm
 
 First, set up the Elasticsearch cluster:
 
-	docker run -d -p 9200:9200 -p 9300:9300 -v "$PwD/elasticsearch":/usr/share/elasticsearch/data --name movies_library_es elasticsearch:1.7
+	docker run -d -p 9200:9200 -p 9300:9300 -v "$PwD/elasticsearch":/usr/share/elasticsearch/data --name movie_library_es elasticsearch:1.7
 	chmod +x es_index_creation.sh
 	./es_index_creation.sh localhost:9200
 
