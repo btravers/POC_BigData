@@ -27,7 +27,7 @@ public class LearningCurve {
      * @param args
      * @throws Exception
      * 
-     * sudo spark-submit --class com.zenika.poc.hdp.spark_jobs.recommender.LearningCurve spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/ratings.dat" "::" "4" "hdfs://sandbox.hortonworks.com:8020/poc/curve1m"
+     * spark-submit --class com.zenika.poc.hdp.spark_jobs.recommender.LearningCurve spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/ratings.dat" "::" "4" "hdfs://sandbox.hortonworks.com:8020/poc/curve1m"
      */
     public static void main(String... args) throws Exception {
         if (args.length != 4) {
