@@ -1,7 +1,7 @@
 module.exports = {
 
     getUrl: function() {
-        return "http://localhost:8080";
+        return "http://localhost/api";
     }
 
 };

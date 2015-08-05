@@ -1,7 +1,5 @@
 #!/bin/bash
 
-curl -XDELETE "http://$1/library/"
-
 curl -XPUT "http://$1/library/" -d "{
 	\"settings\": {
 		\"analysis\": {
