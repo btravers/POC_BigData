@@ -6,7 +6,8 @@ module.exports = {
         return $.ajax({
             type: 'POST',
             url: Config.getUrl() + '/rating',
-            data: rating
+            contentType: "application/json",
+            data: JSON.stringify(rating)
         });
     },
 
