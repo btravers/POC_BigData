@@ -4,11 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zenika.poc.hdp.movie_library.AppConfig;
 import com.zenika.poc.hdp.movie_library.exception.MovieLibraryException;
 import com.zenika.poc.hdp.movie_library.model.Movie;
-import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,8 @@ import java.util.List;
 @Repository
 public class MovieRepositoryImpl implements MovieRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(MovieRepositoryImpl.class);
+
     @Autowired
     private Client client;
 
@@ -27,6 +30,7 @@ public class MovieRepositoryImpl implements MovieRepository {
 
     @Override
     public Movie get(String id) throws IOException, MovieLibraryException {
+        logger.info("Getting movie " + id);
         SearchResponse response = this.client.prepareSearch(AppConfig.INDEX)
                 .setTypes(AppConfig.MOVIE)
                 .setQuery(QueryBuilders.termQuery("id", id))
@@ -41,6 +45,8 @@ public class MovieRepositoryImpl implements MovieRepository {
 
     @Override
     public List<Movie> search(String request) throws IOException {
+        logger.info("Getting movies for \"" + request + "\"");
+
         SearchResponse response = this.client.prepareSearch(AppConfig.INDEX)
                 .setTypes(AppConfig.MOVIE)
                 .setQuery(

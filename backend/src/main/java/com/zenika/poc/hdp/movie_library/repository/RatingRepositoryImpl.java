@@ -8,6 +8,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @Repository
 public class RatingRepositoryImpl implements RatingRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(RatingRepositoryImpl.class);
+
     @Autowired
     private Client client;
 
@@ -26,6 +30,8 @@ public class RatingRepositoryImpl implements RatingRepository {
 
     @Override
     public Rating get(String user, String movie) throws MovieLibraryException, IOException {
+        logger.info("Getting rating for user " + user + " and movie " + movie);
+
         SearchResponse response = this.client.prepareSearch(AppConfig.INDEX)
                 .setTypes(AppConfig.RATING)
                 .setQuery(
@@ -48,6 +54,8 @@ public class RatingRepositoryImpl implements RatingRepository {
 
     @Override
     public void set(Rating rating) throws IOException, MovieLibraryException {
+        logger.info("Creating rating " + this.mapper.writeValueAsString(rating));
+
         String user = rating.getUser();
         String movie = rating.getMovie();
 
@@ -73,6 +81,8 @@ public class RatingRepositoryImpl implements RatingRepository {
 
     @Override
     public List<Rating> getByUser(String user) throws IOException {
+        logger.info("Get ratings for user " + user);
+
         SearchResponse response = this.client.prepareSearch(AppConfig.INDEX)
                 .setTypes(AppConfig.RATING)
                 .setSize(Integer.MAX_VALUE)

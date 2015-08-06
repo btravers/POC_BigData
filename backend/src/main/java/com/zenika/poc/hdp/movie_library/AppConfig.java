@@ -5,6 +5,8 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 @Configuration
 @ComponentScan({"com.zenika.poc.hdp.movie_library.web", "com.zenika.poc.hdp.movie_library.service", "com.zenika.poc.hdp.movie_library.repository"})
 public class AppConfig {
+    private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
     public static final String INDEX = "library";
     public static final String MOVIE = "movie";
@@ -49,6 +52,7 @@ public class AppConfig {
 
     @Bean
     public Client client() {
+        logger.info("Creating ES client on node " + host + ":" + port);
         TransportClient client = new TransportClient();
 
         TransportAddress address = new InetSocketTransportAddress(host, port);

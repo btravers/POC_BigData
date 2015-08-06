@@ -2,22 +2,20 @@ var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var RecommendationConstants = require('../constants/RecommendationConstants');
-var RecommendationActions = require('../actions/RecommendationActions');
 var UserConstants = require('../constants/UserConstants');
 
 var CHANGE_EVENT = 'change';
 
-var __recommendations = [];
+var __user = 1;
 
-function update(recommendations) {
-    __recommendations = recommendations;
+function update(user) {
+    __user = user;
 }
 
 
-var RecommendationStore = assign({}, EventEmitter.prototype, {
-    getAll: function () {
-        return __recommendations;
+var UserStore = assign({}, EventEmitter.prototype, {
+    get: function () {
+        return __user;
     },
 
     emitChange: function() {
@@ -36,15 +34,12 @@ var RecommendationStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
 
     switch (action.actionType) {
-        case RecommendationConstants.RECOMMENDATION_GET_BY_USER:
-            update(action.recommendations);
-            RecommendationStore.emitChange();
-            break;
         case UserConstants.USER_UPDATE:
-            RecommendationActions.getByUser(action.user);
+            update(action.user);
+            UserStore.emitChange();
             break;
     }
 
 });
 
-module.exports = RecommendationStore;
+module.exports = UserStore;

@@ -35,7 +35,7 @@ public class Recommendations {
 
         // Reading arguments: the model path, the user id, the number of suggestions, the recommendations destination path
         String modelPath = args[0];
-        int user = Integer.parseInt(args[1]);
+        int nbUser = Integer.parseInt(args[1]);
         int nbMovies = Integer.parseInt(args[2]);
         String es = args[3];
 
@@ -47,24 +47,27 @@ public class Recommendations {
 
         // Loading previously computed model
         MatrixFactorizationModel model = MatrixFactorizationModel.load(jsc.sc(), modelPath);
-        // Computing recommendations for the given user id
-        Rating[] recommendations = model.recommendProducts(user, nbMovies);
 
-        JavaRDD<Map<String, Object>> recommendationsRDD = jsc.parallelize(Arrays.asList(recommendations)).map(new Function<Rating, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> call(Rating v1) throws Exception {
-                Map<String, Object> recommendation =  new HashMap<>();
+        for (int user=1; user<=nbUser; user++) {
+            // Computing recommendations for the given user id
+            Rating[] recommendations = model.recommendProducts(user, nbMovies);
 
-                recommendation.put("movie", v1.product());
-                recommendation.put("user", v1.user());
-                recommendation.put("mark", v1.rating());
+            JavaRDD<Map<String, Object>> recommendationsRDD = jsc.parallelize(Arrays.asList(recommendations)).map(new Function<Rating, Map<String, Object>>() {
+                @Override
+                public Map<String, Object> call(Rating v1) throws Exception {
+                    Map<String, Object> recommendation = new HashMap<>();
 
-                return recommendation;
-            }
-        });
+                    recommendation.put("movie", v1.product());
+                    recommendation.put("user", v1.user());
+                    recommendation.put("mark", v1.rating());
 
-        // Saving recommendations result
-        JavaEsSpark.saveToEs(recommendationsRDD, "library/recommendation");
+                    return recommendation;
+                }
+            });
+
+            // Saving recommendations result
+            JavaEsSpark.saveToEs(recommendationsRDD, "library/recommendation");
+        }
 
         // Stopping context
         jsc.stop();

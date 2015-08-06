@@ -45,11 +45,9 @@ Now, we need to feed our Elasticsearch with data. You can retrieve Elasticsearch
 
 Then, using the artifact from the previous part, perform the two following commands.
 
-> For now, you should set USER_ID to 1 because the GUI can only display results for user 1.
-
 	spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Feeder spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "PATH_TO/movies.dat" "PATH_TO/ratings.dat" "ES_CONTAINER_IP:9200"
 
-	spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Recommendations spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "RESULTING_MODEL_PATH" "USER_ID" "NB_RECOMMENDATIONS" "ES_CONTAINER_IP:9200"
+	spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Recommendations spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "RESULTING_MODEL_PATH" "NB_USER" "NB_RECOMMENDATIONS" "ES_CONTAINER_IP:9200"
 
 
 	

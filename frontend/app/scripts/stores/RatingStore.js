@@ -3,6 +3,8 @@ var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var RatingConstants = require('../constants/RatingConstants');
+var RatingActions = require('../actions/RatingActions');
+var UserConstants = require('../constants/UserConstants');
 
 var CHANGE_EVENT = 'change';
 
@@ -43,6 +45,9 @@ AppDispatcher.register(function (action) {
         case RatingConstants.RATING_GET_BY_USER:
             update(action.ratings);
             RatingStore.emitChange();
+            break;
+        case UserConstants.USER_UPDATE:
+            RatingActions.getRatings(action.user);
             break;
     }
 
