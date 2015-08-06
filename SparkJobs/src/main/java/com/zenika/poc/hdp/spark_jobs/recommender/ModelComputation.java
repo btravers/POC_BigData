@@ -12,7 +12,7 @@ public class ModelComputation {
     /**
      * Main function that compute best ALS model for a given data set and save resulting model on HDP.
      *
-     * Aguments:
+     * Arguments:
      *  - data path
      *  - separator
      *  - model path
@@ -61,7 +61,7 @@ public class ModelComputation {
         sets[2].cache();
 
         MatrixFactorizationModel bestModel = null;
-        double bestMSE = 0;
+        double bestRMSE = 0;
 
         // Computing several model with different values for rank
         for (int rank = 1; rank <= 10; rank++) {
@@ -69,21 +69,21 @@ public class ModelComputation {
             MatrixFactorizationModel model = ALS.train(sets[0].rdd(), rank, numIterations, 0.01);
 
             // Computing MSE over cross validation set
-            double MSE = Utils.computeMSE(model, sets[1]);
-            System.out.println("MSE for rank " + rank + ": " + MSE);
+            double RMSE = Utils.computeRMSE(model, sets[1]);
+            System.out.println("RMSE for rank " + rank + ": " + RMSE);
 
             // Saving model if better than the old one
-            if (bestModel == null || MSE < bestMSE) {
+            if (bestModel == null || RMSE < bestRMSE) {
                 bestModel = model;
-                bestMSE = MSE;
+                bestRMSE = RMSE;
             }
         }
 
         // Evaluating best model on test set
-        double MSE = Utils.computeMSE(bestModel, sets[2]);
+        double RMSE = Utils.computeRMSE(bestModel, sets[2]);
 
         System.out.println("Model rank: " + bestModel.rank());
-        System.out.println("MSE compute over test set: " + MSE);
+        System.out.println("MSE compute over test set: " + RMSE);
 
         // Saving best model
         bestModel.save(jsc.sc(), modelPath);

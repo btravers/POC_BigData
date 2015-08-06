@@ -18,7 +18,7 @@ public class LearningCurve {
     /**
      * Main function that compute learning curve for ALS model using a given rank
      *
-     * Aguments:
+     * Arguments:
      *  - data path
      *  - separator
      *  - rank
@@ -68,8 +68,8 @@ public class LearningCurve {
 
             MatrixFactorizationModel model = ALS.train(tmp.rdd(), rank, numIterations, 0.01);
 
-            double mse1 = Utils.computeMSE(model, tmp);
-            double mse2 = Utils.computeMSE(model, sets[1]);
+            double mse1 = Utils.computeRMSE(model, tmp);
+            double mse2 = Utils.computeRMSE(model, sets[1]);
 
             curve.add(new Tuple2<>(mse1, mse2));
         }

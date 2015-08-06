@@ -17,7 +17,7 @@ public class Recommendations {
     /**
      * Main function that retrieve recommendations for a given user using a given model
      *
-     * Aguments:
+     * Arguments:
      *  - model path
      *  - user id
      *  - number of suggestions

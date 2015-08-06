@@ -11,12 +11,12 @@ import scala.Tuple2;
 public class Utils {
 
     /**
-     * Function that compute model's mean square error over a given data set.
+     * Function that compute model's root mean square error over a given data set.
      * @param model Model to evaluate
      * @param dataset Data set
      * @return Mean square error
      */
-    static double computeMSE(MatrixFactorizationModel model, JavaRDD<Rating> dataset) {
+    static double computeRMSE(MatrixFactorizationModel model, JavaRDD<Rating> dataset) {
         // Generating RDD of couples (userId, movieId)
         JavaRDD<Tuple2<Object, Object>> predictionSet = dataset.map(
                 new Function<Rating, Tuple2<Object, Object>>() {
@@ -53,8 +53,8 @@ public class Utils {
                 )
         ).join(predictions).values();
 
-        // Returning  MSE
-        return JavaDoubleRDD.fromRDD(
+        // Returning  RMSE
+        return Math.sqrt(JavaDoubleRDD.fromRDD(
                 ratesAndPreds.map(
                         new Function<Tuple2<Double, Double>, Object>() {
                             @Override
@@ -63,7 +63,7 @@ public class Utils {
                             }
                         }
                 ).rdd()
-        ).mean();
+        ).mean());
     }
 
     /**
