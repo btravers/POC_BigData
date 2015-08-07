@@ -33,7 +33,7 @@ var User = React.createClass({
             <form className="user navbar-form navbar-left" role="search">
                 <div className="form-group input-group input-group-sm">
                     <span className="input-group-addon">User</span>
-                    <input type="text" ref="userInput" className="form-control" value={this.state.user} onChange={this.handleChange} size="6"/>
+                    <input type="text" ref="userInput" className="form-control" value={this.state.user} onBlur={this.handleChange} size="6"/>
                 </div>
             </form>
         );
