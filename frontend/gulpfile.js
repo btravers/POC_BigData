@@ -35,7 +35,7 @@ gulp.task('sass', function () {
     return $.rubySass('./app/styles', {
         style: 'expanded',
         precision: 10,
-        loadPath: ['app/bower_components']
+        loadPath: ['bower_components']
     })
         .pipe($.autoprefixer('last 1 version'))
         .pipe(gulp.dest('dist/styles'))
@@ -139,8 +139,8 @@ gulp.task('moveLibraries', ['clean'], function () {
 
 // Bower helper
 gulp.task('bower', function () {
-    gulp.src('app/bower_components/**/*.js', {
-        base: 'app/bower_components'
+    gulp.src('bower_components/**/*.js', {
+        base: 'bower_components'
     })
         .pipe(gulp.dest('dist/bower_components/'));
 

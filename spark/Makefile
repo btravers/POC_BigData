@@ -1,9 +1,7 @@
 NAME := btravers/spark
 VERSION := '0.1.0'
 
-all:
-	clean 
-	build
+all: clean build
 
 build:
 	mvn package

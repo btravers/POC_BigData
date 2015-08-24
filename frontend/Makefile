@@ -1,9 +1,7 @@
 NAME := btravers/movie_library
 VERSION := $(or $(VERSION),$(VERSION),'1.0.0')
 
-all:
-	clean 
-	build
+all: clean build
 
 build:
 	npm install
@@ -15,6 +13,7 @@ clean:
 	rm -rf bower_components
 	rm -rf node_modules
 	rm -rf dist
+	rm -rf app/.sass-cache
 
 tag_latest:
 	docker tag $(NAME):$(VERSION) $(NAME):latest

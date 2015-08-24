@@ -89,6 +89,3 @@ curl -XPUT "http://$1/library/" -d "{
 		}
 	}
 }"
-
-exit 0
-

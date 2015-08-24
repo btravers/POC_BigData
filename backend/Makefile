@@ -1,9 +1,7 @@
 NAME := btravers/movie_library_api
 VERSION := $(or $(VERSION),$(VERSION),'1.0.0')
 
-all:
-	clean 
-	build
+all: clean build
 
 build:
 	mvn package

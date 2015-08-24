@@ -4,7 +4,7 @@ N=3
 
 docker rm -f master &> /dev/null
 echo "start master container..."
-docker run -d -t --dns 127.0.0.1 -P --name master -h master.kiwenlau.com -w /root btravers/spark:0.1.0 &> /dev/null
+docker run -d -t --dns 127.0.0.1 -P --name master -h master.kiwenlau.com -v "$PWD"/ml-1m:/data -w /root btravers/spark:0.1.0 &> /dev/null
 
 FIRST_IP=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" master)
 

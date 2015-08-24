@@ -1,4 +1,4 @@
-package com.zenika.poc.hdp.spark_jobs.es.feeder;
+package com.zenika.poc.hdp.spark_jobs.es_feeder;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
@@ -26,7 +26,7 @@ public class Recommendations {
      * @param args
      * @throws Exception
      *
-     * spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Recommendations spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "hdfs://sandbox.hortonworks.com:8020/poc/model1m" "6000" "100" "172.17.0.2:9200"
+     * $SPARK_HOME/bin/spark-submit --class com.zenika.poc.hdp.spark_jobs.es_feeder.Recommendations /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar file:/data/model1m 6000 100 172.17.0.66:9200
      */
     public static void main(String... args) throws Exception {
         if (args.length != 4) {

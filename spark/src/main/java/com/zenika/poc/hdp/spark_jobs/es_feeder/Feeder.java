@@ -1,4 +1,4 @@
-package com.zenika.poc.hdp.spark_jobs.es.feeder;
+package com.zenika.poc.hdp.spark_jobs.es_feeder;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -17,7 +17,7 @@ public class Feeder {
      * @param args
      * @throws Exception
      *
-     * spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Feeder spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/movies.dat hdfs://sandbox.hortonworks.com:8020/poc/data/movielens_1m/ratings.dat 172.17.0.2:9200
+     * $SPARK_HOME/bin/spark-submit --class com.zenika.poc.hdp.spark_jobs.es_feeder.Feeder /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar file:/data/movies.dat file:/data/ratings.dat 172.17.0.66:9200
      */
     public static void main(String... args) throws Exception {
         if (args.length != 3) {
