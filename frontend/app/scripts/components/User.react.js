@@ -15,7 +15,9 @@ var User = React.createClass({
     },
 
     handleChange: function () {
-        this.setState(this.refs.userInput.getDOMNode().value);
+        this.setState({
+            user: this.refs.userInput.getDOMNode().value
+        });
     },
 
     handleBlur: function () {

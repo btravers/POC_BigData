@@ -22,20 +22,27 @@ Before building the project, clone the repository:
 First, set up the Elasticsearch cluster:
 
 	cd POC_BigData/elasticsearch
-	docker run -d -p 9200:9200 -p 9300:9300 -v "$PWD"/data/:/usr/share/elasticsearch/data --name movie_library_es elasticsearch:1.7
-	./es_index_creation.sh localhost:9200
+	docker run -d -v "$PWD"/data/:/usr/share/elasticsearch/data --name movie_library_es elasticsearch:1.7
+	
+Once the Elasticsearch cluster is running, we need to create the index where data will be stored. You can retrieve Elasticsearch container IP address using the following command:
+
+	docker inspect movie_library_es | grep IPAddress
+	
+Then, create the index using:
+
+	./es_index_creation.sh ES_CONTAINER_IP:9200
 
 Set up the backend:
 
 	cd ../backend
 	make
-	docker run -d -p 8080:8080 --link movie_library_es:es.url --name movie_library_api btravers/movie_library_api:1.0.0
+	docker run -d --link movie_library_es:es.url --name movie_library_api btravers/movie_library_api:1.0.0
 
-Finaly, set up frontend:
+Finally, set up frontend:
 
 	cd ../frontend
 	make
-	docker run -d -p 80:80/tcp --link movie_library_api:movie_library_api --name movie_library btravers/movie_library:1.0.0
+	docker run -d -p 80:80 --link movie_library_api:movie_library_api --name movie_library btravers/movie_library:1.0.0
 
 ## Computing ALS model using Spark and MLlib
 
@@ -43,22 +50,28 @@ Package SparkJobs project using maven:
 
 	cd ../spark
 	mvn package
+	
+Download data from MovieLens:
 
-It should produce an artifact with dependencies in the target directory. Use this artifact with Spark in order to compute the ALS model.
+	wget files.grouplens.org/datasets/movielens/ml-1m.zip
+	unzip ml-1m.zip
 
-	spark-submit --class com.zenika.poc.hdp.spark_jobs.recommender.ModelComputation spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "PATH_TO/ratings.dat" "::" "RESULTING_MODEL_PATH"
+Once the artifact built, we set up Spark in a container:
 
-## Feeding your Elasticearch cluster with data
+	docker build -t btravers/spark:0.1.0
+	docker pull kiwenlau/hadoop-slave:0.1.0
+	./start-up.sh
+	
+When the script ends, you are running bash shell in master container. Compute ALS model:
+	
+	$SPARK_HOME/bin/spark-submit --class com.zenika.poc.hdp.spark_jobs.recommender.ModelComputation /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar file:/data/ratings.dat :: file:/data/model1m > /data/res.log			
 
-Now, we need to feed our Elasticsearch with data. You can retrieve Elasticsearch container IP address using the following command:
+## Feeding your Elasticsearch cluster with data
 
-	docker inspect movie_library_es | grep IPAddress
+Using master container bash shell, perform the following commands:
 
-Then, using the artifact from the previous part, perform the two following commands.
-
-	spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Feeder spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "PATH_TO/movies.dat" "PATH_TO/ratings.dat" "ES_CONTAINER_IP:9200"
-
-	spark-submit --class com.zenika.poc.hdp.spark_jobs.es.feeder.Recommendations spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar "RESULTING_MODEL_PATH" "NB_USER" "NB_RECOMMENDATIONS" "ES_CONTAINER_IP:9200"
+	$SPARK_HOME/bin/spark-submit --class com.zenika.poc.hdp.spark_jobs.es_feeder.Feeder /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar file:/data/movies.dat file:/data/ratings.dat ES_CONTAINER_IP:9200
+	$SPARK_HOME/bin/spark-submit --class com.zenika.poc.hdp.spark_jobs.es_feeder.Recommendations /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar file:/data/model1m NB_USERS NB_RECOMMENDATIONS ES_CONTAINER_IP:9200
 
 
 	

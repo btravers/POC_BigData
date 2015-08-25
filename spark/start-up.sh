@@ -17,4 +17,5 @@ do
 	((i++))
 done
 
+#docker exec master /root/start-hadoop.sh
 docker exec -it master bash
