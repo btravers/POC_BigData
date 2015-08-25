@@ -11,7 +11,6 @@ Requirements:
 - Bower
 - Gem sass
 - Gulp
-- Spark
 
 ## Building
 
