@@ -22,7 +22,7 @@ Before building the project, clone the repository:
 First, set up the Elasticsearch cluster:
 
 	cd POC_BigData/elasticsearch
-	docker run -d -p 9200:9200 -p 9300:9300 -v "$PWD":/usr/share/elasticsearch/data --name movie_library_es elasticsearch:1.7
+	docker run -d -p 9200:9200 -p 9300:9300 -v "$PWD"/data/:/usr/share/elasticsearch/data --name movie_library_es elasticsearch:1.7
 	./es_index_creation.sh localhost:9200
 
 Set up the backend:

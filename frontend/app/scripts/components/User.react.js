@@ -15,6 +15,10 @@ var User = React.createClass({
     },
 
     handleChange: function () {
+        this.setState(this.refs.userInput.getDOMNode().value);
+    },
+
+    handleBlur: function () {
         if (this.refs.userInput.getDOMNode().value > 0) {
             UserActions.update(this.refs.userInput.getDOMNode().value);
         }
@@ -33,7 +37,8 @@ var User = React.createClass({
             <form className="user navbar-form navbar-left" role="search">
                 <div className="form-group input-group input-group-sm">
                     <span className="input-group-addon">User</span>
-                    <input type="text" ref="userInput" className="form-control" value={this.state.user} onBlur={this.handleChange} size="6"/>
+                    <input type="text" ref="userInput" className="form-control" value={this.state.user}
+                           onBlur={this.handleBlur} onChange={this.handleChange} size="6"/>
                 </div>
             </form>
         );
