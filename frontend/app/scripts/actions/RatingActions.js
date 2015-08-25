@@ -17,14 +17,13 @@ var RatingActions = {
             if (rating) {
                 return rating.mark;
             }
-
             return null;
         })
     },
 
     createRating: function (rating) {
         HttpRating.createRating(rating).done(function () {
-            this.getRating(1);
+            this.getRatings(rating.user);
         });
     }
 };

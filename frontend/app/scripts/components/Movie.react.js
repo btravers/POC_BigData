@@ -2,6 +2,7 @@ var React = require('react');
 
 var RatingActions = require('../actions/RatingActions');
 var RatingStore = require('../stores/RatingStore');
+var UserStore = require('../stores/UserStore');
 
 function getRating(movie) {
     return {
@@ -18,7 +19,7 @@ var Movie = React.createClass({
         RatingActions.createRating({
             mark: this.refs.ratingInput.getDOMNode().value,
             movie: this.props.movie.id,
-            user: 1
+            user: UserStore.get()
         });
     },
 

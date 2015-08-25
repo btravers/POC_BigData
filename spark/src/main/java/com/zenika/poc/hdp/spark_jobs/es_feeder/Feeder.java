@@ -17,7 +17,7 @@ public class Feeder {
      * @param args
      * @throws Exception
      *
-     * $SPARK_HOME/bin/spark-submit --class com.zenika.poc.hdp.spark_jobs.es_feeder.Feeder /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar file:/data/movies.dat file:/data/ratings.dat 172.17.0.66:9200
+     * $SPARK_HOME/bin/spark-submit --class com.zenika.poc.hdp.spark_jobs.es_feeder.Feeder /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar file:/data/movies.dat file:/data/ratings.dat 172.17.0.1:9200
      */
     public static void main(String... args) throws Exception {
         if (args.length != 3) {
