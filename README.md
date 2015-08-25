@@ -74,5 +74,26 @@ Using master container bash shell, perform the following commands:
 	$SPARK_HOME/bin/spark-submit --class com.zenika.poc.hdp.spark_jobs.es_feeder.Recommendations /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar file:/data/model1m NB_USERS NB_RECOMMENDATIONS ES_CONTAINER_IP:9200
 
 
+## Spark on YARN (optional)
+
+We can use YARN in order to manage Spark jobs.
+
+Start Hadoop:
+
+	./start-hadoop.sh
+
+Put files into HDFS:
+
+	hadoop dfs -mkdir /data
+	hadoop dfs -put /data/ratings.dat /data/ratings.dat
+	hadoop dfs -put /data/movies.dat /data/movies.dat
+	
+Run Spark jobs on YARN:
+
+	$SPARK_HOME/bin/spark-submit --master yarn-cluster --class com.zenika.poc.hdp.spark_jobs.recommender.ModelComputation /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar /data/ratings.dat :: /data/model1m
+	$SPARK_HOME/bin/spark-submit --master yarn-cluster --class com.zenika.poc.hdp.spark_jobs.es_feeder.Feeder /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar /data/movies.dat /data/ratings.dat ES_CONTAINER_IP:9200
+	$SPARK_HOME/bin/spark-submit --master yarn-cluster --class com.zenika.poc.hdp.spark_jobs.es_feeder.Recommendations /spark_jobs-1.0-SNAPSHOT-jar-with-dependencies.jar /data/model1m NB_USERS NB_RECOMMENDATIONS ES_CONTAINER_IP:9200
+
+
 	
 
